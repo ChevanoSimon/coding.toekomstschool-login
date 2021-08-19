@@ -56,3 +56,11 @@ For more information visit [Vercel CLI docs](https://vercel.com/docs/cli)
 
 <!-- ### Architechture
 ![project architechture](/readme/architechture.png "project architechture") -->
+
+### not installed with node
+
+
+axios - npm install axios
+react - npm install react
+router - npm install --save react-router-dom
+react dom - npm install react react-dom
