@@ -8,6 +8,7 @@ import TerminalContainer from './Terminal';
 import commandOuputs from './commands';
 
 interface Props {
+  projectTitle: string,
   id: string;
 }
 

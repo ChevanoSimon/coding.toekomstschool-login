@@ -8,16 +8,14 @@ import SidebarSection from './Sidebar';
 import { Panel, PanelItem, UserId } from './Panel';
 import { Files, FileItem, TopBar, TopBarButton, DeleteButton } from './Files';
 import AddLanguageLogo from '../../utils/AddLanguageLogo';
-import TitleConfirm from '../titlePopup/TitleConfirm';
-
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import CustomPostMaker from '../projectTitler/CustomPostMaker';
 
 interface Props {
+  projectTitle: string;
   id: string;
 }
 
-const Sidebar: FC<Props> = ({ id }) => {
+const Sidebar: FC<Props> = ({ id, projectTitle }) => {
   const {
     filesData,
     filesList,
@@ -64,59 +62,12 @@ const Sidebar: FC<Props> = ({ id }) => {
     }
   };
 
-  const TitleConfirm = () => (
-    <Popup
-      trigger={<button className="button"> Open Modal </button>}
-      modal
-      nested
-    >
-      {close => (
-        <div className="modal">
-          <button className="close" onClick={close}>
-            &times;
-          </button>
-          <div className="header"> Modal Title </div>
-          <div className="content">
-            {' '}
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-            <br />
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-          </div>
-          <div className="actions">
-            <Popup
-              trigger={<button className="button"> Trigger </button>}
-              position="top center"
-              nested
-            >
-              <span>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-                magni omnis delectus nemo, maxime molestiae dolorem numquam
-                mollitia, voluptate ea, accusamus excepturi deleniti ratione
-                sapiente! Laudantium, aperiam doloribus. Odit, aut.
-              </span>
-            </Popup>
-            <button
-              className="button"
-              onClick={() => {
-                console.log('modal closed ');
-                close();
-              }}
-            >
-              close modal
-            </button>
-          </div>
-        </div>
-      )}
-    </Popup>
-  );
-
   const saveWork = (ev: MouseEvent) => {
     const elem = ev.target as HTMLButtonElement;
     const id = localStorage.getItem('id');
+    const projectTitle = localStorage.getItem('projectTitle');
+    console.log("working before " + projectTitle)
+    
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -131,7 +82,7 @@ const Sidebar: FC<Props> = ({ id }) => {
     // Disable button
     elem.disabled = true;
     elem.style.cursor = 'progress';
-
+    
     if (id) {
       fetch(`https://ota.toekomst.school/wp-json/wp/v2/codeprojects?id=${id}`, {
         method: 'POST',
@@ -149,8 +100,14 @@ const Sidebar: FC<Props> = ({ id }) => {
               <br />
               You can also import your saved data from anywhere by entering <UserId>{id}</UserId> in
               the import option.
-            </div>,
+            </div>
           );
+          if (!!!projectTitle){
+            toast.dark(
+              <CustomPostMaker />
+            );
+          }
+          
           elem.disabled = false;
           elem.style.cursor = 'pointer';
         })

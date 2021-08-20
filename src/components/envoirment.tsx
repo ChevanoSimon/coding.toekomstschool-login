@@ -34,10 +34,10 @@ const Envoirment: FC = () => {
       <GlobalStyles />
       <Context>
         <GlobalContainer className="split">
-          <Sidebar id="sidebar" />
+          <Sidebar id="sidebar" projectTitle="test"/>
           <MiddleContainer id="code" className="split">
             <Editor id="editor" />
-            <Terminal id="terminal" />
+            <Terminal id="terminal" projectTitle="test" />
           </MiddleContainer>
           <Output id="output" />
         </GlobalContainer>
