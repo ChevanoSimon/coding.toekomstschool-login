@@ -8,11 +8,14 @@ import SidebarSection from './Sidebar';
 import { Panel, PanelItem, UserId } from './Panel';
 import { Files, FileItem, TopBar, TopBarButton, DeleteButton } from './Files';
 import AddLanguageLogo from '../../utils/AddLanguageLogo';
+import TitleConfirm from '../titlePopup/TitleConfirm';
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 interface Props {
   id: string;
 }
-
 
 const Sidebar: FC<Props> = ({ id }) => {
   const {
@@ -61,6 +64,56 @@ const Sidebar: FC<Props> = ({ id }) => {
     }
   };
 
+  const TitleConfirm = () => (
+    <Popup
+      trigger={<button className="button"> Open Modal </button>}
+      modal
+      nested
+    >
+      {close => (
+        <div className="modal">
+          <button className="close" onClick={close}>
+            &times;
+          </button>
+          <div className="header"> Modal Title </div>
+          <div className="content">
+            {' '}
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+          </div>
+          <div className="actions">
+            <Popup
+              trigger={<button className="button"> Trigger </button>}
+              position="top center"
+              nested
+            >
+              <span>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
+                magni omnis delectus nemo, maxime molestiae dolorem numquam
+                mollitia, voluptate ea, accusamus excepturi deleniti ratione
+                sapiente! Laudantium, aperiam doloribus. Odit, aut.
+              </span>
+            </Popup>
+            <button
+              className="button"
+              onClick={() => {
+                console.log('modal closed ');
+                close();
+              }}
+            >
+              close modal
+            </button>
+          </div>
+        </div>
+      )}
+    </Popup>
+  );
+
   const saveWork = (ev: MouseEvent) => {
     const elem = ev.target as HTMLButtonElement;
     const id = localStorage.getItem('id');
@@ -80,13 +133,15 @@ const Sidebar: FC<Props> = ({ id }) => {
     elem.style.cursor = 'progress';
 
     if (id) {
-      fetch(`/api/saveFilesData?id=${id}`, {
+      fetch(`https://ota.toekomst.school/wp-json/wp/v2/codeprojects?id=${id}`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ filesData }),
       })
         .then((res) => res.json())
         .then(({ id }) => {
+          
+          //console.log(filesData)
           toast.dismiss();
           toast.dark(
             <div>
@@ -96,7 +151,6 @@ const Sidebar: FC<Props> = ({ id }) => {
               the import option.
             </div>,
           );
-
           elem.disabled = false;
           elem.style.cursor = 'pointer';
         })
@@ -104,7 +158,7 @@ const Sidebar: FC<Props> = ({ id }) => {
       return false;
     }
 
-    fetch('/api/saveFilesData', {
+    fetch('https://ota.toekomst.school/wp-json/wp/v2/codeprojects', {
       method: 'POST',
       headers,
       body: JSON.stringify({ filesData }),
@@ -121,7 +175,6 @@ const Sidebar: FC<Props> = ({ id }) => {
             the import option.
           </div>,
         );
-
         elem.disabled = false;
         elem.style.cursor = 'pointer';
       })
@@ -132,7 +185,7 @@ const Sidebar: FC<Props> = ({ id }) => {
     const id = window.prompt('Please enter your saved data ID');
 
     if (id) {
-      fetch(`/api/getFilesData?id=${id}`)
+      fetch(`https://ota.toekomst.school/wp-json/wp/v2/codeprojects?id=${id}`)
         .then((res) => res.json())
         .then(({ filesData }) => {
           if (filesData) {

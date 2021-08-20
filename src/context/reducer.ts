@@ -7,6 +7,7 @@ const reducer = (state: types.IState, action: types.Action) => {
     case types.ADD_FILE:
       // Updating to IndexDB, WebSQL or LocalStorage
       localforage.setItem('filesData', [...state.filesData, action.payload]);
+      console.log('filesData')
 
       return {
         ...state,
