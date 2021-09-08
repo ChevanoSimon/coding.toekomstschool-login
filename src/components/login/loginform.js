@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from "axios";
 
@@ -28,7 +28,6 @@ class LoginForm extends Component {
 
   handleLoginSuccess = user => {
     localStorage.setItem(AUTH_TOKEN, JSON.stringify(user));
-    console.log('user', user)
     this.setState({
       validate: false,
       loading: false,
@@ -77,7 +76,7 @@ class LoginForm extends Component {
           validated={validate}
           onSubmit={this.handleLogin}
         >
-          <h2>coding.toekomstshool</h2>
+          <h2>coding.toekomstschool</h2>
           <Form.Group controlId="username">
             <Form.Label>Username</Form.Label><br />
             <Form.Control 

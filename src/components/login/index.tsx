@@ -4,7 +4,6 @@ interface Props {
   id: string;
 }
 
-
 const Login: FC<Props> = ({ id }) => {
   return (
     <form action="action_page.php" method="post">
@@ -23,7 +22,7 @@ const Login: FC<Props> = ({ id }) => {
   </div>
   <div className="container" >
     <button type="button" className="cancelbtn">Cancel</button>
-    <span className="psw">Forgot <a href="https://ota.toekomst.school/wp-login.php?action=lostpassword">password?</a></span>
+    <span className="psw">Forgot<a href="https://ota.toekomst.school/wp-login.php?action=lostpassword">password?</a></span>
   </div>
 </form>
 

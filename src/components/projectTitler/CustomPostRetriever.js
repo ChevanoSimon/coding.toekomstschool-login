@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../../styles/styling.css';
 
 const CustomPostRetriever = () =>{
 
@@ -11,7 +12,7 @@ const CustomPostRetriever = () =>{
   // When the page number changes call the api for posts.
   useEffect(() => {
     axios.get("https://ota.toekomst.school/wp-json/wp/v2/codeprojects", {
-      params: { page: page }
+      params: { page: page, per_page: 5 }
     }).then(response => {
       // Store the number of posible pages.
       setNumberofpage(response.headers["x-wp-totalpages"]);
@@ -27,15 +28,11 @@ const CustomPostRetriever = () =>{
 
   return (
     <div className="posts-app__wrapper">
-      <h1>Navigate codeprojects</h1>
-
-      <div className="posts-app__post-nav">
-        <button onClick={handlePrevPage}>Newer projects</button>
-        <button onClick={handleNextPage}>Older projects</button>
-        <p>
-          Page {page} of {nrofpages}
-        </p>
-      </div>
+      {nrofpages > 1 &&
+        <div className="posts-app__post-nav">
+          <button onClick={handlePrevPage}>Newer projects</button>
+        </div>
+      }
 
       <div className="posts-app__post-list">
         {posts &&
@@ -43,61 +40,29 @@ const CustomPostRetriever = () =>{
           posts.map((post, index) => {
             return (
               <div key={post.id} className="posts-app__post">
-                <h2>{post.title.rendered}</h2>
-                <a href={post.link} target="_blank" rel="noreferrer">
-                  Read post
+                <a href={"/coding/" + post.id} >
+                  <h2>{post.title.rendered}</h2>
                 </a>
               </div>
             );
           })}
       </div>
+
+      {nrofpages > 1 &&
+        <div className="posts-app__post-nav">
+          <button onClick={handleNextPage}>Older projects</button>
+        </div>
+      }
+
+      {nrofpages > 1 &&
+        <div>
+          <p>
+            Page {page} of {nrofpages}
+          </p>
+        </div>
+      }
     </div>
   );
 }
 
-// - SINGLE PAGE RETRIEVER - 
-
-// import React, { Component } from 'react';
-// class CustomPostRetriever extends Component {
-
-//     constructor() {
-//     super();
-//     this.state = {
-//       post: [],
-//     };
-//   }
-
-//   componentDidMount() { 
-//     axios.get('https://ota.toekomst.school/wp-json/wp/v2/codeprojects')
-//     .then(response => {
-//       this.setState({ post: response.data });
-//       console.log(response.data)
-//     })
-//     .catch(error => {
-//         console.log(error);
-//     });
-//     }
-
-//   render() {
-//     return (
-
-//       <div>
-//         {this.state.post.map(single => {
-//             return(
-//             <div>
-//                 <label>Retrieved projects</label>
-//                 <p>Project title: {single.title.rendered}</p>
-//                 <p>Project ID: {single.content.rendered}</p>
-//             </div>                                        
-//             );
-//         })}
-//       </div>
-//     );
-//   }
-// }
-
 export default CustomPostRetriever;
-
-// If api returns array then you can take only first element, f.e.:
-
-// this.setState({ post: response.data[0] });
