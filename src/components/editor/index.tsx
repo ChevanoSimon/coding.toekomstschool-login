@@ -21,7 +21,7 @@ const Index: FC<Props> = ({ id }) => {
   const handleEditorChange = useDebouncedFn((value: any) => {
     addFileData(value);
   }, 1000);
-
+  
   const handleOnMount = () => {
     emmetHTML((window as any).monaco);
     emmetCSS((window as any).monaco);
@@ -73,13 +73,13 @@ const Index: FC<Props> = ({ id }) => {
       <EditorContainer id={id}>
         <Editor
           theme="one-dark-pro"
-          defaultLanguage={activeFile.language}
-          value={activeFile.value}
-          path={activeFile.name}
-          onChange={handleEditorChange}
-          onMount={handleOnMount}
-          beforeMount={handleBeforeMount}
-          options={{
+          defaultLanguage = {activeFile.language}
+          value = {activeFile.value}
+          path = {activeFile.name}
+          onChange = {handleEditorChange}
+          onMount = {handleOnMount}
+          beforeMount = {handleBeforeMount}
+          options = {{
             minimap: {
               enabled: false,
             },

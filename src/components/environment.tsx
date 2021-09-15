@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, Component } from 'react';
 import Split from 'split.js';
 import { useParams } from 'react-router-dom';
 
@@ -16,9 +16,13 @@ import Editor from './editor';
 import Terminal from './terminal';
 import Output from './output';
 import axios from 'axios';
- 
+
+let savedTitle;
+export const projectTitle = savedTitle;
+
 const Environment: FC = () => {
   let { id } = useParams();
+  
   useEffect(() => {
     Split(['#sidebar', '#code', '#output'], {
       gutterSize: 5,
@@ -33,28 +37,28 @@ const Environment: FC = () => {
 
 
   const getSavedWork = () => {
-    let savedTitle;
-
-    if (id) {
-      console.log("id " + id)
-    axios.get(`https://ota.toekomst.school/wp-json/wp/v2/codeprojects?include[]=${id}`, {
-      params: { content: 'string', title: 'string' }
-    }).then((Response) => {
-      const data = Response.data;
-      //console.log(data[0].acf.json)
-      console.log(data)
-
-      savedTitle = data.title.rendered;
-
-      console.log(savedTitle)
-
-      // plaats filedata in de editor
-      // plaats titel op de juiste plek
-      // als ik opsla, wil ik weer update ipv nieuwe
-
-      
-    })
-  }}
+    function componentDidMount() {
+        if (id) {
+          //console.log("id " + id)
+          axios.get(`https://ota.toekomst.school/wp-json/wp/v2/codeprojects?include[]=${id}`, {
+          params: { content: 'string', title: 'string' }
+        }).then((Response) => {
+          const data = Response.data;
+          //console.log(data[0].acf.json)
+          console.log(data)
+    
+          savedTitle = data[0].title.rendered;
+    
+          console.log(savedTitle)
+    
+          // plaats filedata in de editor
+          // plaats titel op de juiste plek
+          // als ik opsla, wil ik weer update ipv nieuwe
+        })
+      }
+    }
+    componentDidMount()
+  }
   
   getSavedWork()
   
@@ -63,7 +67,7 @@ const Environment: FC = () => {
       <GlobalStyles />
       <Context>
         <GlobalContainer className="split">
-          <Sidebar id="sidebar" projectTitle=""/>
+          <Sidebar id="sidebar" projectTitle={savedTitle}/>
           <MiddleContainer id="code" className="split">
             <Editor id="editor" />
             <Terminal id="terminal" projectTitle="test" />

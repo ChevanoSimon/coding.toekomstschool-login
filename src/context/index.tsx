@@ -4,6 +4,8 @@ import localforage from 'localforage';
 import reducer from './reducer';
 import * as types from './types';
 import { defaultFilesData, defaultFilesList, defaultActiveFile } from './data';
+//import { defaultFilesData2, defaultFilesList2, defaultActiveFile2 } from './data2';
+
 
 const initialState: types.IState = {
   activeFile: defaultActiveFile,

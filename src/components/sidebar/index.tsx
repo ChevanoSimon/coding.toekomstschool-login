@@ -10,7 +10,9 @@ import { Files, FileItem, TopBar, TopBarButton, DeleteButton } from './Files';
 import AddLanguageLogo from '../../utils/AddLanguageLogo';
 import axios from 'axios';
 import { AUTH_TOKEN } from '../../helper'
-import CustomPostRetriever from '../projectTitler/CustomPostRetriever';
+import CustomPostRetriever from '../projectgetter/CustomPostRetriever';
+
+//import {projectTitle} from '../environment'
 
 interface Props {
   projectTitle: string;
@@ -19,7 +21,11 @@ interface Props {
 
 let title
 
+
 const Sidebar: FC<Props> = (props) => {
+  console.log(props.id)
+  let savedTitle = props.projectTitle
+  console.log('title ' +props.projectTitle)
   const [titleOfProject, setTitleOfProject] = useState(title);
   const {
     filesData,
@@ -30,6 +36,20 @@ const Sidebar: FC<Props> = (props) => {
     // addImportedFilesData,
     removeFile,
   } = useAppContext();
+
+  console.log(savedTitle)
+  //console.log(titleOfProject)
+
+  if(savedTitle){
+    title = savedTitle;
+    console.log("executed 'actual title'")
+  }
+  else if(titleOfProject == null){
+    title = "(Geen title)"
+    console.log("executed 'geen title'")
+  }
+
+  console.log(title)
 
   const isAcceptedFileFormat = (filename: string) =>
     filename.endsWith('html') || filename.endsWith('css') || filename.endsWith('js');
@@ -130,7 +150,7 @@ const Sidebar: FC<Props> = (props) => {
   }
 
   // eslint-disable-next-line
-  const getTitle= () => title
+  const getTitle = () => title
 
   const [fileList, setFileList] = useState('files');
 
@@ -225,6 +245,7 @@ const Sidebar: FC<Props> = (props) => {
           <TopBarButton title="Add new file"/>
         </TopBar>
         }
+        
         {fileList === 'projects' && 
         <FileItem>
           <CustomPostRetriever/>

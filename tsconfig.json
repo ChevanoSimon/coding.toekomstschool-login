@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "noImplicitAny": false
   },
-  "include": ["src", "api", "model"]
+  "include": ["src", "api", "model", "src/context/.data2.ts"]
 }

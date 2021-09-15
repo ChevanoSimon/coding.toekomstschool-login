@@ -25,7 +25,6 @@ const Login: FC<Props> = ({ id }) => {
     <span className="psw">Forgot<a href="https://ota.toekomst.school/wp-login.php?action=lostpassword">password?</a></span>
   </div>
 </form>
-
   )
 }
 
