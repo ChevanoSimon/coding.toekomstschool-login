@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { FC, MouseEvent } from 'react';
+import { useState, useEffect, FC, MouseEvent } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { useAppContext } from '../../context';
@@ -11,8 +10,9 @@ import AddLanguageLogo from '../../utils/AddLanguageLogo';
 import axios from 'axios';
 import { AUTH_TOKEN } from '../../helper'
 import CustomPostRetriever from '../projectgetter/CustomPostRetriever';
+import Outlogger from '../login/logout';
 
-//import {projectTitle} from '../environment'
+// import {projectTitle} from '../environment'
 
 interface Props {
   projectTitle: string;
@@ -20,12 +20,12 @@ interface Props {
 }
 
 let title
-
+let projectTitle
 
 const Sidebar: FC<Props> = (props) => {
-  console.log(props.id)
-  let savedTitle = props.projectTitle
-  console.log('title ' +props.projectTitle)
+
+  let savedTitle = projectTitle
+
   const [titleOfProject, setTitleOfProject] = useState(title);
   const {
     filesData,
@@ -37,9 +37,6 @@ const Sidebar: FC<Props> = (props) => {
     removeFile,
   } = useAppContext();
 
-  console.log(savedTitle)
-  //console.log(titleOfProject)
-
   if(savedTitle){
     title = savedTitle;
     console.log("executed 'actual title'")
@@ -48,8 +45,6 @@ const Sidebar: FC<Props> = (props) => {
     title = "(Geen title)"
     console.log("executed 'geen title'")
   }
-
-  console.log(title)
 
   const isAcceptedFileFormat = (filename: string) =>
     filename.endsWith('html') || filename.endsWith('css') || filename.endsWith('js');
@@ -106,48 +101,70 @@ const Sidebar: FC<Props> = (props) => {
     
       const bodyParameters = {
           title: title,
-          //content: JSON.stringify({ filesData }),
           fields: {
             json: JSON.stringify({ filesData })
           },
           status: "publish"
       }
 
+      //disable to prevent sending new posts
       if (title !== undefined || title !== null){
-          axios.post(
-            url,
-            bodyParameters,
-            config
-          ).then(data => {
-            let json = data.data.split("\n")
-            console.log(json)
-          }).catch(console.log).catch(err => console.log(err));
+          // axios.post(
+          //   url,
+          //   bodyParameters,
+          //   config
+          // ).then(data => {
+          //   let json = data.data.split("\n")
+          //   console.log(json)
+          // }).catch(console.log).catch(err => console.log(err));
       }
     }
 
     const user = JSON.parse(localStorage.getItem(AUTH_TOKEN) as string);
-    
-    if (!!!title) {
-      toast.dark(
-        <div>
-          <form onSubmit = {HandleSubmit}>
-                <fieldset>
-                    <label>
-                        <p>Project name</p>
-                        <input name="nameOfProject" onInput={handleChange}/>
-                    </label><br/>
-                    <button type="submit" onClick={() => setTitleOfProject(title)}>Submit</button>
-                </fieldset>
+
+    switch(title){
+      case "(Geen title)":
+        toast.dark(
+          <div>
+            <form onSubmit = {HandleSubmit}>
+              <fieldset>
+                <label>
+                  <p>Project name</p>
+                  <input name="nameOfProject" onInput={handleChange}/>
+                </label><br/>
+                <button type="submit" onClick={() => setTitleOfProject(title)}>Submit</button>
+              </fieldset>
             </form>
-        </div>,
-      );
-    }
-    else{
-      toast.dark(
-        <div>Your project was saved.</div>
-      )
+          </div>,
+        );
+      break;
+
+      default:
+          toast.dark(
+            <div>Your project was saved.</div>
+          )
     }
   }
+
+  //300000 ms = 5 min
+
+  // const MINUTE_MS = 10000;
+
+  // useEffect(() => {
+  // const interval = setInterval(() => {
+  //   toast.dark('Het project is automatisch opgeslagen', {
+  //     position: "bottom-left",
+  //     autoClose: 2500,
+  //     hideProgressBar: true,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     });
+  // }, MINUTE_MS);
+  // // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  // return () => clearInterval(interval); 
+  // }, [])
 
   // eslint-disable-next-line
   const getTitle = () => title
@@ -160,6 +177,9 @@ const Sidebar: FC<Props> = (props) => {
     }
     if (state === "projects"){
       setFileList('projects')
+    }
+    if (state === "profile"){
+      setFileList('profile')
     }
   }
 
@@ -174,13 +194,15 @@ const Sidebar: FC<Props> = (props) => {
       />
       <Panel>
 
-        <PanelItem title="Explorer"
-        active={fileList === 'files'}
-        onClick={ () => { 
-          refresh('files');
-        }}
-        
-        >
+        <PanelItem title="Profile" active={fileList === 'profile'} onClick={() => refresh('profile')}>
+          
+        <svg width="24" height="24" viewBox="0 0 24 24" style={{ pointerEvents: 'none' }}>
+            <path d="M13 6c3.469 0 2 5 2 5s5-1.594 5 2v9h-12v-16h5zm.827-2h-7.827v20h16v-11.842c0-2.392-5.011-8.158-8.173-8.158zm.173-2l-3-2h-9v22h2v-20h10z" />
+        </svg>
+
+        </PanelItem>
+
+        <PanelItem title="Explorer" active={fileList === 'files'} onClick={ () => {refresh('files');}}>
           <svg width="24" height="24" viewBox="0 0 24 24" style={{ pointerEvents: 'none' }}>
             <path d="M13 6c3.469 0 2 5 2 5s5-1.594 5 2v9h-12v-16h5zm.827-2h-7.827v20h16v-11.842c0-2.392-5.011-8.158-8.173-8.158zm.173-2l-3-2h-9v22h2v-20h10z" />
           </svg>
@@ -212,6 +234,19 @@ const Sidebar: FC<Props> = (props) => {
           <p>{titleOfProject}</p>
         }
         </TopBar>
+
+        {fileList === 'profile' &&
+          <TopBar>
+          Profile
+          </TopBar>
+        }
+
+        {fileList === 'profile' &&
+          <FileItem>
+              <Outlogger/>
+            </FileItem>
+        }
+
         {fileList === 'files' && 
         <TopBar>
           Files

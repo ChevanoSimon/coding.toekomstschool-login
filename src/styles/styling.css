@@ -76,27 +76,19 @@ btn:not(:disabled):not(.disabled) {
   }
 }
 .profile-container {
-  margin: 2em;
-  padding: 2em;
-  box-shadow: 3px 3px 15px 0 #dadada;
+  margin: auto;
+  margin-top: 5%;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
+  margin-left: 26px;
 }
-.user-snippet {
-  background: #981d9a;
-  padding: 40px;
-  width: 150px;
-  height: 150px;
-  margin: 50px;
-  border-radius: 75px;
-}
-.user-snippet h1 {
-  color: #ffffff;
-  text-align: center;
-  padding-top: 16px;
+.btkbpm{
+  padding: 0px!important;
+  margin-left: 15px;
 }
 .wrapper {
   padding: 5px 20px;
@@ -104,7 +96,6 @@ btn:not(:disabled):not(.disabled) {
 .wrapper fieldset {
   margin: 20px 0;
 }
-
 /* 
  * Posts navigation
  */
@@ -201,4 +192,7 @@ btn:not(:disabled):not(.disabled) {
 }
 .kiDOdC {
   background-color: black!important;
+}
+.ddDFyX{
+  font-size: 18px!important;
 }

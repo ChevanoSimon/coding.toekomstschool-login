@@ -1,4 +1,4 @@
-import { FC, useEffect, Component } from 'react';
+import { FC, useEffect } from 'react';
 import Split from 'split.js';
 import { useParams } from 'react-router-dom';
 

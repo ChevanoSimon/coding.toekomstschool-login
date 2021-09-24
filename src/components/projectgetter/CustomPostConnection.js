@@ -20,12 +20,11 @@ let CustomPostConnection = (title, content, status) => {
        status: "publish",
     };
     
-    
-    // axios.post( 
-    //   url,
-    //   bodyParameters,
-    //   config
-    // ).then(console.log).catch(console.log);
+    axios.post( 
+        url,
+        bodyParameters,
+        config
+    ).then(console.log).catch(console.log);
 }
 
 export default CustomPostConnection

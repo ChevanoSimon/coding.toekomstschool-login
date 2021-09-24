@@ -41,7 +41,7 @@ const CustomPostRetriever = () =>{
       setPosts(response.data);
     });
     }, [page, setPosts]);
-    })  
+    }) 
 
   // Event handler: Decrease page count no lower then 1.
   const handlePrevPage = () => setPage(page - 1 ? page - 1 : 1);

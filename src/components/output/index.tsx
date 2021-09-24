@@ -32,7 +32,7 @@ const Output: FC<Props> = ({ id }) => {
 
   if (process.env.NODE_ENV === 'production') console.clear();
 
-    //creating IP state
+  //creating IP state
   const [ip, setIP] = useState('');
 
   //creating function to load ip address from the API

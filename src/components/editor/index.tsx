@@ -17,6 +17,7 @@ interface Props {
 const Index: FC<Props> = ({ id }) => {
   const { activeFile, filesData, changeActiveFile, addFileData } = useAppContext();
   const [wrap, setWrap] = useState(false);
+  console.log(filesData)
 
   const handleEditorChange = useDebouncedFn((value: any) => {
     addFileData(value);
